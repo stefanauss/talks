@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>AirSwitching - 1 Cable (And a ½) To Rule Them All</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/stefanauss.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<section>
+					<h1>AirSwitching</h1>
+					<h2>1 (and a ½) Cable to Rule Them All</h2>
+					<h3>Ninux Day 2017 @ Bologna</h3>
+					<small>Stefanauss, Lipos - Ninux Cosenza</small>
+				</section>
+
+				<section>
+					<h2>Cos'è?</h2>
+					<p>È Ground Routing complementato da uno:</p>
+					<ul>
+						<li><strong>Switch</strong> con chip dedicato, non-blocking throughput</li>
+						<li><strong>Managed</strong> (in realtà è anche router, ma abbiamo già il GR)</li>
+						<li><strong>PoE</strong> sia in ingresso che in  uscita (passthrough)</li>
+						<li><strong>Outdoor</strong>, rugged come se non meglio delle CPE solite</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Perchè?</h2>
+					<ul>
+						<li>Logisticamente è una vittoria</li>
+						<li>0 scuse per non supernodarsi</li>
+						<li>Massima espandibilità di un supernodo</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Perchè non prima?</h2>
+					<ul>
+						<li>Perchè prima dispositivi con tutte queste feature <u>contemporanemante</u> non c'erano</li>
+						<li>o costavano un occhio della testa</li>
+						<li>Lo abbiamo sperimentato in un momento di <u>totale insofferenza</u> per i nodi foglia</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Switch</h2>
+					<ul>
+						<li>Switching silicon dedicato, come su molti router OpenWrt</li>
+						<li>Throughput dedicato, non condiviso come sugli OpenWrt!</li>
+						<li>Wire speed, 0% load</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Managed</h2>
+					<ul>
+						<li>Riduttivo, considerando che sono RouterOS o EdgeOS completi</li>
+						<li>Supporto più feature complete delle funzionalità L2 (OpenWrt supporta veramente il minimo)</li>
+						<li>Noi lo usiamo praticamente come un ali figo, ma per chi vuole fare setup astrusi c'è il mondo</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>PoE</h2>
+					<ul>
+						<li>Alimentabili via PoE, sia 4 che 8 coppie</li>
+						<li>PoE passthrough su tutte le altre porte</li>
+						<li>Possibilità di alimentazione alternativa in DC</li>
+						<li>La potenza massima erogabile si ottiene via DC</li>
+						<li>Via PoE c'è margine di tranquillità solo per 2 antenne full load</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Outdoor</h2>
+					<ul>
+						<li>Water/Weather-proof</li>
+						<li>Montaggio a palo (metal ring)</li>
+					</ul>
+				</section>
+
+				<section>
+					<section>
+						<h2>Mikrotik Powerbox Pro</h2>
+						<h3><a href="https://mikrotik.com/product/RB960PGS-PB">RB960PGS-PB (82€)</a></h3>
+						<img src="https://img.routerboard.com/mimg/1298_l.jpg" style="height: 50%; width: 50%">
+					</section>
+					<section>
+						<h2>Mikrotik Powerbox Pro</h2>
+						<h3><a href="https://mikrotik.com/product/RB960PGS-PB">RB960PGS-PB (82€)</a></h3>
+						<ul>
+							<li>5 porte Gigabit + 1 SFP</li>
+							<li>Switch QCA8337, ether1-5</li>
+							<li>Range voltaggio 12-57 V</li>
+							<li>@&le;30V: Corrente max per porta 1A; Corrente max totale 2A</li>
+							<li>Potenza massima erogabile 60W (9W massimi device)</li>
+							<li>PoE autodetect</li>
+							<li>Ali + PoE injector inclusi</li>
+							<li>Monitor temperatura + voltaggio</li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Mikrotik Powerbox</h2>
+						<h3><a href="https://mikrotik.com/product/RB750P-PBr2">RB750P-PBr2 (53€)</a></h3>
+						<img src="https://img.routerboard.com/mimg/1004_l.jpg" style="height: 50%; width: 50%">
+					</section>
+					<section>
+						<h2>Mikrotik Powerbox</h2>
+						<h3><a href="https://mikrotik.com/product/RB750P-PBr2">RB750P-PBr2 (53€)</a></h3>
+						<ul>
+							<li>5 porte 10/100</li>
+							<li>Switch Atheros8227, ether1-5</li>
+							<li>Range voltaggio 8-30 V</li>
+							<li>@&le;30V: Corrente max per porta 1A; Corrente max totale 2A</li>
+							<li>Potenza massima erogabile 60W (2W massimi device)</li>
+							<li>No PoE autodetect</li>
+							<li>Ali + PoE injector inclusi</li>
+							<li>Monitor temperatura + voltaggio</li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Ubiquiti EdgePoint</h2>
+						<h3><a href="https://www.ubnt.com/edgemax/edgepoint/">EP-R6 (104€)</a></h3>
+						<img src="http://weblance.com.ua/uploads/posts/2016-09/1474818271_review_ubiquiti_edgepoint_ep-r6_11_anterfaces_closer.jpg" style="height: 66%; width: 66%">
+					</section>
+					<section>
+						<h2>Ubiquiti EdgePoint</h2>
+						<h3><a href="https://www.ubnt.com/edgemax/edgepoint/">EP-R6 (104€)</a></h3>
+						<ul>
+							<li>5 porte Gigabit + SFP</li>
+							<li>Switch ?</li>
+							<li>Range voltaggio 16-26V</li>
+							<li>DC Terminal Block con autocorrezione polarità</li>
+							<li>@&le;30V: Corrente max per porta 1A; Corrente max totale 2A</li>
+							<li>Potenza massima erogabile 30W con PoE-In; 72W con DC (7W massimi device)</li>
+							<li>No PoE autodetect</li>
+							<li>PoE injector incluso, Ali DC a parte</li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<h2>Logistica</h2>
+					<ul>
+						<li>Già era raro, ora l'inscatolamento sta a 0</li>
+						<li>Semplificazione progetti dei supernodi, solo 1 cavo (e mezzo, la DC) da portare</li>
+						<li>Sposta il fattore limitante per i supernodi dalla logistica al budget</li>
+						<li>Supernodo StefanaussRoges: da impossibile a 3 antenne</li>
+						<li>Supernodo Algemfeac: maggiore operatività e autonomia sul tetto e upgrade immediato da 1 a 4 antenne</li>
+						<li>Ready in prospettiva "nodo autonomo".</li>
+					</ul>
+				</section>
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
