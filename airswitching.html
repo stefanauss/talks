@@ -82,7 +82,7 @@
 				<section>
 					<h2>PoE</h2>
 					<ul>
-						<li>Alimentabili via PoE, sia 4 che 8 coppie</li>
+						<li>Alimentabili via PoE, sia 2 che 4 coppie</li>
 						<li>PoE passthrough su tutte le altre porte</li>
 						<li>Possibilità di alimentazione alternativa in DC</li>
 						<li>La potenza massima erogabile si ottiene via DC</li>
@@ -175,6 +175,146 @@
 						<li>Ready in prospettiva "nodo autonomo".</li>
 					</ul>
 				</section>
+
+				<section>
+					<h2>Config Mikrotik RouterOS</h2>
+					<h3>Master Port</h3>
+					<ul>
+						<li>RouterOS ha il concetto di <em>master port</em></li>
+						<li>Una porta ethernet viene "sottratta" alla CPU/OS e resa parte dello switching group assegnandole una master port</li>
+						<li>La master port è unica ed è la "porta CPU" dello switch a livello OS </li>
+						<li>L'OS non vede il traffico delle altre porte dello switching group!</li>
+						<li>Compaiono come "slave" (S) in RouterOS</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Config Mikrotik Powerbox Pro</h2>
+					<pre><code># jan/02/1970 02:05:10 by RouterOS 6.39.1
+# software id = IJ69-YT55
+#
+### CREAZIONE SWITCHING GROUP ###
+### MASTER PORT = TRUNK VS GR ###
+/interface ethernet
+set [ find default-name=ether2 ] master-port=ether1
+set [ find default-name=ether3 ] master-port=ether1
+set [ find default-name=ether4 ] master-port=ether1
+#
+### CREAZIONE DEI TRUNK ###
+/interface ethernet switch vlan
+add independent-learning=yes ports=ether1,ether2 switch=switch1 vlan-id=3
+add independent-learning=yes ports=ether1,ether3 switch=switch1 vlan-id=4
+add independent-learning=yes ports=ether1,ether4 switch=switch1 vlan-id=5
+### switch1-cpu indispensabile per abilitare il management ###
+add independent-learning=yes ports=ether1,ether2,ether3,ether4,switch1-cpu \
+    switch=switch1 vlan-id=7
+#
+### NATIVE/UNTAGGED VLAN/PVID ###
+/interface ethernet switch port
+set 0 default-vlan-id=7 vlan-mode=secure
+set 1 default-vlan-id=7 vlan-mode=secure
+set 2 default-vlan-id=7 vlan-mode=secure
+set 3 default-vlan-id=7 vlan-mode=secure
+set 5 default-vlan-id=7 vlan-mode=secure
+#
+/ip hotspot profile
+set [ find default=yes ] html-directory=flash/hotspot
+/interface l2tp-server server
+set caller-id-type=ip-address
+/ip address
+add address=192.168.1.1/24 interface=ether5 network=192.168.1.0
+#
+### MANAGEMENT DEL POWERBOX ###
+add address=10.87.19.250/24 interface=ether1 network=10.87.19.0</code></pre>
+				</section>
+
+			<section>
+				<h2>Config Mikrotik Powerbox</h2>
+				<pre><code># nov/23/2017 23:38:16 by RouterOS 6.39.1
+# software id = T3VQ-A2K6
+#
+#
+### CREAZIONE SWITCHING GROUP ###
+### MASTER PORT = TRUNK VS GR ###
+/interface ethernet
+set [ find default-name=ether2 ] master-port=ether1
+# NO AUTOPOE
+set [ find default-name=ether3 ] master-port=ether1 poe-out=forced-on
+set [ find default-name=ether4 ] master-port=ether1
+#
+### CREAZIONE DEI TRUNK ###
+/interface ethernet switch vlan
+add ports=ether1,ether2 switch=switch1 vlan-id=3
+add ports=ether3,ether4 switch=switch1 vlan-id=9
+### switch1-cpu indispensabile per abilitare il management ###
+add ports=ether1,ether2,switch1-cpu,ether3,ether4 switch=switch1 vlan-id=7
+add ports=ether3,ether1 switch=switch1 vlan-id=4
+#
+### NATIVE/UNTAGGED VLAN/PVID ###
+### Bug delle VLAN, 2017 Edition ###
+/interface ethernet switch port
+set 0 vlan-mode=secure
+set 1 vlan-mode=secure
+set 2 vlan-mode=secure
+set 3 vlan-mode=secure
+set 5 vlan-mode=secure
+#
+### MANAGEMENT POWERBOX ###
+### Iface di tipo VLAN perchè è necessario processare traffico tagged ###
+/interface vlan
+add interface=ether1 name=mgmt vlan-id=7
+/ip hotspot profile
+set [ find default=yes ] html-directory=flash/hotspot
+/interface l2tp-server server
+set caller-id-type=ip-address
+#
+### INDIRIZZI: EMERGENZA + MGMT RINOMINATA ###
+/ip address
+add address=192.168.88.1/24 interface=ether5 network=192.168.88.0
+add address=10.97.0.250/24 interface=mgmt network=10.97.0.0
+#
+### DEFAULT GATEWAY = GR ###
+/ip route
+add distance=1 gateway=10.97.0.1
+/system clock
+set time-zone-name=Europe/Rome</code></pre>
+			</section>
+
+			<section>
+				<h2>RouterOS Cable Test</h2>
+				<h3>Lifesaver :-)</h3>
+				<img src="https://i.imgur.com/fW2kbrj.jpg">
+			</section>
+
+			<section>
+				<section>
+					<h2>Configurazione EdgePoint</h2>
+					<img src="http://i.share.pho.to/1772b9f0_o.png">
+				</section>
+				<section>
+					<h2>Configurazione EdgePoint</h2>
+					<img src="http://i.share.pho.to/3a463647_o.png">
+				</section>
+				<section>
+					<h2>Ubiquitume del giorno</h2>
+					<ul>
+						<li>Di default management su eth0. Quindi</li>
+						<li>Assegna le VLAN alle altre eth e dalle allo switch</li>
+						<li>Sposta la management sullo switch</li>
+						<li>Loggati dalla nuova management</li>
+						<li>Aggiungi VLAN su eth0 e aggiungi allo switch</li>
+						<li>Profit?</li>
+					</ul>
+				</section>
+				<section>
+					<h2>PoE Selection</h2>
+					<img src="http://i.share.pho.to/c53f3129_o.png">
+				</section>
+			</section>
+
+			<section>
+				<h1>Happy Ninux :)</h1>
+			</section>
 
 			</div>
 		</div>
